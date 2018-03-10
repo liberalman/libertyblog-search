@@ -11,9 +11,7 @@
 require_once '/usr/local/xunsearch/sdk/php/lib/XS.php';
 error_reporting(E_ALL ^ E_NOTICE);
 
-//$xs = new XS('/usr/local/xunsearch/sdk/php/app/article.ini');
-
-$xs = new XS('libertyblog'); // 建立 XS 对象，项目名称为：article
+$xs = new XS('libertyblog'); // 建立 XS 对象，项目名称为：libertyblog
 $INDEX = $xs->index; // 创建索引对象
 
 $method = $_SERVER['REQUEST_METHOD'];
@@ -34,7 +32,7 @@ try {
             
             // 查询记录总的数量
             $filter = array();
-            $commands = [ 'count' => 'articles', 'query' => $filter];
+            $commands = [ 'count' => 'articles', 'query' => $filter]; // collection名称是 articles
             $command = new \MongoDB\Driver\Command($commands);
             $cursor = $manager->executeCommand('libertyblog-dev', $command);
             $info = $cursor->toArray();
@@ -45,7 +43,7 @@ try {
             for ($page = 0; $page < $total;) {
                 $options = array(
                     /* Only return the following fields in the matching documents */
-                    "projection" => array("title" => 1,"description" => 1),
+                    "projection" => array("title" => 1,"description" => 1, "content" => 1),
                     "skip" => $page,
                     "limit" => $page_size,
                 );

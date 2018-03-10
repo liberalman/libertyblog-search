@@ -6,7 +6,7 @@ ln -s /opt/lampp/htdocs/libertyblog-search/libertyblog.ini /usr/local/xunsearch/
 
 重建索引，浏览器中直接访问如下地址
 ```
-http://localhost:8080/libertyblog-search/api.php?cmd=reindex
+http://api.hicool.top:8080/libertyblog-search/api.php?cmd=reindex
 ```
 添加索引
 ```
