@@ -24,7 +24,7 @@
   <div class="row">
 	<!-- search form -->
     <div class="span12">
-      <h1><a href="<?php echo $_SERVER['SCRIPT_NAME']; ?>"><img src="img/logo.jpg" /></a></h1>
+      <h1><a href="<?php echo $_SERVER['SCRIPT_NAME']; ?>"><img src="img/logo1.jpg" /></a></h1>
       <form class="form-search" id="q-form" method="get">
         <div class="input-append" id="q-input">
           <input type="text" class="span6 search-query" name="q" title="输入任意关键词皆可搜索" value="<?php echo htmlspecialchars($q); ?>">
@@ -90,11 +90,11 @@
       <dl class="result-list">
         <?php foreach ($docs as $doc): ?>
         <dt>
-          <a target="_blank" href="http://www.hicool.top/article/<?php echo $doc->id; ?>"><h4><?php echo $doc->rank(); ?>. <?php echo $search->highlight(htmlspecialchars($doc->title)); ?> <small>[<?php echo $doc->percent(); ?>%]</small></h4></a>          
+          <a target="_blank" href="http://www.hicool.top/article/<?php echo $doc->_id; ?>"><h4><?php echo $doc->rank(); ?>. <?php echo $search->highlight(htmlspecialchars($doc->title)); ?> <small>[<?php echo $doc->percent(); ?>%]</small></h4></a>          
         </dt>
         <dd>
           <p class="field-info text-error">
-            <span><strong>Digest:</strong><?php echo htmlspecialchars($doc->digest); ?></span>
+            <span><strong>Description:</strong><?php echo htmlspecialchars($doc->description); ?></span>
           </p>
           <p><?php echo $search->highlight(htmlspecialchars($doc->content)); ?></p>
         </dd>
@@ -149,8 +149,8 @@
 <!-- footer -->
 <footer>
   <div class="container">
-    <p>(C)opyright 2011 - Libertyblog search - 页面处理总时间：<?php printf('%.4f', $total_cost); ?>秒<br>
-      Powered by <a href="http://www.xunsearch.com/" target="_blank" title="开源免费的中文全文检索">xunsearch/1.4.11</a></p>
+    <p>(C)opyright 2016 - Libertyblog search - 页面处理总时间：<?php printf('%.4f', $total_cost); ?>秒<br>
+      Powered by <a href="http://www.hicool.top/" target="_blank" title="Libertyblog 博客">libertyblog</a></p>
   </div>
 </footer>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.6.2/jquery.min.js"></script>

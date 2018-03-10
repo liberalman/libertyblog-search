@@ -20,10 +20,57 @@ $method = $_SERVER['REQUEST_METHOD'];
 try {
     if ($method == 'GET')
     {
-        $cmd = $_SERVER['QUERY_STRING'];
+        $cmd = $_GET['cmd'];
         switch ($cmd)
         {
-        case 'query':
+        case 'reindex':
+            // 清空索引，慎用
+            $INDEX->clean();
+
+            // http://php.net/manual/en/mongodb-driver-manager.executequery.php
+            $manager = new MongoDB\Driver\Manager("mongodb://api.hicool.top:27017");
+            $page_size = 10;
+            $total = 0;
+            
+            // 查询记录总的数量
+            $filter = array();
+            $commands = [ 'count' => 'articles', 'query' => $filter];
+            $command = new \MongoDB\Driver\Command($commands);
+            $cursor = $manager->executeCommand('libertyblog-dev', $command);
+            $info = $cursor->toArray();
+            $total = $info[0]->n;
+            echo 'total:'.$total.'</br>';
+
+            // 轮询分页数据
+            for ($page = 0; $page < $total;) {
+                $options = array(
+                    /* Only return the following fields in the matching documents */
+                    "projection" => array("title" => 1,"description" => 1),
+                    "skip" => $page,
+                    "limit" => $page_size,
+                );
+                $query = new MongoDB\Driver\Query($filter, $options);
+                $cursor = $manager->executeQuery('libertyblog-dev.articles', $query);
+                $i = 0;
+                foreach ($cursor as $document) {
+                    //print_r($document);
+                    $doc = (array)$document;
+                    $data = array(
+                        '_id' => $doc['_id'], // 此字段为主键，必须指定
+                        'title' => $doc['title'],
+                        'content' => $doc['content'],
+                        'description' => $doc['description'],
+                        'chrono' => time()
+                    );
+                    $doc = new XSDocument; // 创建文档对象
+                    $doc->setFields($data);
+                    $INDEX->add($doc); // 添加到索引数据库中
+                    echo 'success '.($page + $i).': '.$doc['_id'].' '.$doc['title'].'</br>';
+                    $i++;
+                }
+
+                $page = $page + $page_size;
+            }
             break;
         default:
             echo 'not found this cmd : '.$cmd;
@@ -31,15 +78,13 @@ try {
     }
     else if ($method == 'POST')
     {
-        // curl -l -H "Content-type: application/json" -X POST -d '{"cmd":"update"}' localhost:8080/libertyblog/api.php
-        // curl -X POST -d 'cmd=add&id=123456&title=not mydark&content=this is not mydark&digest=aaaa' localhost:8080/libertyblog/api.php
-        // curl -X POST -d 'cmd=update&id=123456&title=mydark&content=this is mydark&digest=dddd' localhost:8080/libertyblog/api.php
+        header('Access-Control-Allow-Origin:*');//注意！跨域要加这个头
         $cmd = $_POST['cmd'];
         $data = array(
-            'id' => $_POST['id'], // 此字段为主键，必须指定
+            '_id' => $_POST['_id'], // 此字段为主键，必须指定
             'title' => $_POST['title'],
             'content' => $_POST['content'],
-            'digest' => $_POST['digest'],
+            'description' => $_POST['description'],
             'chrono' => time()
         );
         switch ($cmd)
@@ -62,10 +107,9 @@ try {
     }
     else if ($method == 'DELETE')
     {
-        // curl -X DELETE localhost:8080/libertyblog/api.php/123456
         $id = pathinfo($_SERVER['REQUEST_URI'], PATHINFO_BASENAME) ;
         $INDEX->del($id);
-        echo '{"result":0,"id":'.$id.'}';
+        echo '{"result":0,"_id":'.$id.'}';
     }
     else
     {
@@ -75,41 +119,4 @@ try {
     $error = strval($e);
     echo '{"result":"'.$error.'"}';
 }
-
-function update($data)
-{
-}
-
-function add($data)
-{
-}
-
-function delete($id)
-{
-}
-
-//获取域名或主机地址 
-//echo $_SERVER['HTTP_HOST']."<br>"; #localhost
-
-//获取网页地址 
-//echo $_SERVER['PHP_SELF']."<br>"; #/blog/testurl.php
-
-//获取网址参数 
-//echo $_SERVER["QUERY_STRING"]."<br>"; #id=5
-
-//获取用户代理 
-//echo $_SERVER['HTTP_REFERER']."<br>"; 
-
-//获取完整的url
-//echo 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."<br/>";
-//echo 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']."<br/>";
-
-
-//包含端口号的完整url
-//echo 'http://'.$_SERVER['SERVER_NAME'].':'.$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"]."<br/>"; 
-
-
-//只取路径
-//$url='http://'.$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"]."<br/>"; 
-//echo dirname($url);
 
