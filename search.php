@@ -97,7 +97,7 @@ try {
 
 		// set offset, limit
 		$p = max(1, intval($p));
-		$n = XSSearch::PAGE_SIZE;
+		$n = XSSearch::PAGE_SIZE + 10;
 		$search->setLimit($n, ($p - 1) * $n);
 
 		// get the result
