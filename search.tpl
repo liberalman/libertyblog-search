@@ -24,7 +24,7 @@
   <div class="row">
 	<!-- search form -->
     <div class="span12">
-      <h1><a href="<?php echo $_SERVER['SCRIPT_NAME']; ?>"><img src="img/logo1.jpg" /></a></h1>
+      <h1><a href="<?php echo $_SERVER['SCRIPT_NAME']; ?>"><img src="img/logo.png" /></a></h1>
       <form class="form-search" id="q-form" method="get">
         <div class="input-append" id="q-input">
           <input type="text" class="span6 search-query" name="q" title="输入任意关键词皆可搜索" value="<?php echo htmlspecialchars($q); ?>">
