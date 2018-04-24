@@ -363,7 +363,7 @@ class XS extends XSComponent
 	{
 		if ($this->_index === null) {
 			$adds = array();
-			$conn = isset($this->_config['server.index']) ? $this->_config['server.index'] : 8383;
+			$conn = isset($this->_config['server.index']) ? $this->_config['server.index'] : 9393;
 			if (($pos = strpos($conn, ';')) !== false) {
 				$adds = explode(';', substr($conn, $pos + 1));
 				$conn = substr($conn, 0, $pos);
@@ -2400,7 +2400,7 @@ class XSServer extends XSComponent
 	{
 		$str = $this->_conn;
 		if (is_int($str) || is_numeric($str)) {
-			$str = 'localhost:' . $str;
+			$str = 'api.hicool.top:' . $str;
 		} elseif (strpos($str, ':') === false) {
 			$str = 'unix://' . $str;
 		}
@@ -2538,7 +2538,7 @@ class XSServer extends XSComponent
 	{
 		$conn = $this->_conn;
 		if (is_int($conn) || is_numeric($conn)) {
-			$host = 'localhost';
+			$host = 'api.hicool.top';
 			$port = intval($conn);
 		} elseif (!strncmp($conn, 'file://', 7)) {
 			$conn = substr($conn, 7);
