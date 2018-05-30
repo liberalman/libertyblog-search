@@ -124,7 +124,7 @@ try {
 			$pe = min($pb + 10, ceil($count / $n) + 1);
 			$pager = '';
 			do {
-				$pager .= ($pb == $p) ? '<li class="disabled"><a>' . $p . '</a></li>' : '<li><a href="/search' . $bu . '&p=' . $pb . '">' . $pb . '</a></li>';
+				$pager .= ($pb == $p) ? '<li class="disabled"><a>' . $p . '</a></li>' : '<li><a href="' . $bu . '&p=' . $pb . '">' . $pb . '</a></li>';
 			} while (++$pb < $pe);
 		}
 	}
