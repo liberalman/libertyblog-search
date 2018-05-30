@@ -4,12 +4,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $oe; ?>" />
 <meta name="googlebot" content="index,noarchive,nofollow,noodp" />
 <meta name="robots" content="index,nofollow,noarchive,noodp" />
-<title><?php if (!empty($q)) echo "搜索：" . strip_tags($q) . " - "; ?>Libertyblog 搜索 - Powered by xunsearch</title>
-<meta http-equiv="keywords" content="Fulltext Search Engine Libertyblog xunsearch" />
-<meta http-equiv="description" content="Fulltext Search for Libertyblog, Powered by xunsearch/1.4.11 " />
-<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+<title><?php if (!empty($q)) echo "搜索：" . strip_tags($q) . " - "; ?>Libertyblog 搜索 - Powered by liberalman</title>
+<meta http-equiv="keywords" content="Fulltext Search Engine Libertyblog" />
+<meta http-equiv="description" content="Fulltext Search for Libertyblog, Powered by liberalman " />
+<link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/2.3.1/css/bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="css/style.css"/>
-<link rel="stylesheet" href="https://cdn.bootcss.com/jqueryui/1.8.16/jquery-ui.css" type="text/css" media="all" />
+<link rel="stylesheet" href="http://apps.bdimg.com/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" type="text/css" media="all" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
@@ -153,8 +153,8 @@
       Powered by <a href="http://www.hicool.top/" target="_blank" title="Libertyblog 博客">libertyblog</a></p>
   </div>
 </footer>
-<script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.6.2/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.bootcss.com/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.6.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 <script type="text/javascript">
 $(function(){
 	// input tips
