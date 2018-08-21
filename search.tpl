@@ -90,7 +90,7 @@
       <dl class="result-list">
         <?php foreach ($docs as $doc): ?>
         <dt>
-          <a target="_blank" href="http://www.hicool.top/article/<?php echo $doc->_id; ?>"><h4><?php echo $doc->rank(); ?>. <?php echo $search->highlight(htmlspecialchars($doc->title)); ?> <small>[<?php echo $doc->percent(); ?>%]</small></h4></a>          
+          <a target="_blank" href="http://www.hicool.top:5000/#/article/<?php echo $doc->_id; ?>"><h4><?php echo $doc->rank(); ?>. <?php echo $search->highlight(htmlspecialchars($doc->title)); ?> <small>[<?php echo $doc->percent(); ?>%]</small></h4></a>          
         </dt>
         <dd>
           <p class="field-info text-error">
