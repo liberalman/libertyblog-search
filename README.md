@@ -4,9 +4,9 @@
 ln -s /opt/lampp/htdocs/libertyblog-search/libertyblog.ini /usr/local/xunsearch/sdk/php/app/libertyblog.ini
 ```
 
-重建索引，浏览器中直接访问如下地址
+重建索引，慎用，我们的网站已经很大了，重建一次好数小时
 ```
-http://api.hicool.top:8080/libertyblog-search/api.php?cmd=reindex
+http://localhost:8080/libertyblog-search/api.php?cmd=reindex
 ```
 添加索引
 ```

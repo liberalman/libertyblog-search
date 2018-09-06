@@ -21,12 +21,13 @@ try {
         $cmd = $_GET['cmd'];
         switch ($cmd)
         {
-        case 'reindex':
+        case 'reindex': // 由于PHP中安装mongodb.so后因为新版本认证算法连接不上去，所以此项暂时不能用。使用脚本 /data/libertyblog-web/scripts/mysql2mongo/reindex_search.js
             // 清空索引，慎用
             $INDEX->clean();
 
             // http://php.net/manual/en/mongodb-driver-manager.executequery.php
-            $manager = new MongoDB\Driver\Manager("mongodb://api.hicool.top:27017");
+            $manager = new MongoDB\Driver\Manager("mongodb://username:password@host:port/dbname"); // PHP7
+            var_dump($manager);
             $page_size = 10;
             $total = 0;
             
@@ -34,7 +35,7 @@ try {
             $filter = array();
             $commands = [ 'count' => 'articles', 'query' => $filter]; // collection名称是 articles
             $command = new \MongoDB\Driver\Command($commands);
-            $cursor = $manager->executeCommand('libertyblog-dev', $command);
+            $cursor = $manager->executeCommand($dbname, $command);
             $info = $cursor->toArray();
             $total = $info[0]->n;
             echo 'total:'.$total.'</br>';
@@ -48,7 +49,7 @@ try {
                     "limit" => $page_size,
                 );
                 $query = new MongoDB\Driver\Query($filter, $options);
-                $cursor = $manager->executeQuery('libertyblog-dev.articles', $query);
+                $cursor = $manager->executeQuery('articles', $query);
                 $i = 0;
                 foreach ($cursor as $document) {
                     //print_r($document);
@@ -69,6 +70,7 @@ try {
 
                 $page = $page + $page_size;
             }
+            echo 'reindex end';
             break;
         default:
             echo 'not found this cmd : '.$cmd;
@@ -115,6 +117,9 @@ try {
     }
 } catch (XSException $e) {
     $error = strval($e);
-    echo '{"result":"'.$error.'"}';
+    echo '{"result":"-1","message::"'.$error.'"}';
+} catch (Exception $e) {
+    $error = $e->getMessage();
+    echo '{"result":"-2","message::"'.$error.'"}';
 }
-
+?>
