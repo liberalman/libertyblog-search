@@ -21,6 +21,90 @@ try {
         $cmd = $_GET['cmd'];
         switch ($cmd)
         {
+        case 'search':
+            header('Content-type:text/json');
+            $q = $_GET['key'];
+            //echo '{"key": "'.$q.'"}';
+            
+            $search = $xs->search;
+            $search->setCharset('UTF-8');
+
+            if (empty($q)) {
+                // just show hot query
+                $hot = $search->getHotQuery();
+                echo '{}';
+            } else {
+                // fuzzy search
+                $search->setFuzzy($m === 'yes');
+
+                // synonym search
+                $search->setAutoSynonyms($syn === 'yes');
+
+                // set query
+                if (!empty($f) && $f != '_all') {
+                    $search->setQuery($f . ':(' . $q . ')');
+                } else {
+                    $search->setQuery($q);
+                }
+
+                // set sort
+                if (($pos = strrpos($s, '_')) !== false) {
+                    $sf = substr($s, 0, $pos);
+                    $st = substr($s, $pos + 1);
+                    $search->setSort($sf, $st === 'ASC');
+                }
+
+                // set offset, limit
+                $p = max(1, intval($p));
+                $n = XSSearch::PAGE_SIZE + 10;
+                $search->setLimit($n, ($p - 1) * $n);
+
+                // get the result
+                $search_begin = microtime(true);
+                $docs = $search->search();
+                $search_cost = microtime(true) - $search_begin;
+
+                // get other result
+                $count = $search->getLastCount();
+                $total = $search->getDbTotal();
+
+                if ($xml !== 'yes') {
+                    // try to corrected, if resul too few
+                    if ($count < 1 || $count < ceil(0.001 * $total)) {
+                        $corrected = $search->getCorrectedQuery();
+                    }
+                    // get related query
+                    $related = $search->getRelatedQuery();
+                }
+
+                // gen pager
+                if ($count > $n) {
+                    $pb = max($p - 5, 1);
+                    $pe = min($pb + 10, ceil($count / $n) + 1);
+                    $pager = '';
+                    do {
+                        $pager .= ($pb == $p) ? '<li class="disabled"><a>' . $p . '</a></li>' : '<li><a href="' . $bu . '&p=' . $pb . '">' . $pb . '</a></li>';
+                    } while (++$pb < $pe);
+                }
+                $total_cost = microtime(true) - $total_begin;
+                $array_2 = array(); // 多维数组
+                foreach ($docs as $doc) {
+                    $array = array(); //一维数组
+                    $array['_id'] = $doc->_id;
+                    //$array['url'] = 'http://www.hicool.top/#/article/'.$doc->_id; 
+                    $array['rank'] = $doc->rank(); 
+                    //$array['title']=$search->highlight(htmlspecialchars($doc->title)); 
+                    $array['title'] = $doc->title;
+                    $array['percent']=$doc->percent(); 
+                    //$array['description']=htmlspecialchars($doc->description);
+                    $array['description'] = $doc->description;
+                    //$array['contentt']=$search->highlight(htmlspecialchars($doc->content));
+                    //$array['contentt'] = $doc->content;
+                    array_push($array_2, $array);
+                }
+                echo '{"list": '.json_encode($array_2).', "total":'.$total.', "count":'.$count.', "search_cost":'.$search_cost.',"total_cost":'.$total_cost.'}';
+            }
+            break;
         case 'reindex': // 由于PHP中安装mongodb.so后因为新版本认证算法连接不上去，所以此项暂时不能用。使用脚本 /data/libertyblog-web/scripts/mysql2mongo/reindex_search.js
             // 清空索引，慎用
             $INDEX->clean();
