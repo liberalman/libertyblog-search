@@ -154,8 +154,8 @@ try {
                 $array_2 = array(); // 多维数组
                 foreach ($docs as $doc) {
                     $array = array(); //一维数组
-                    $array['_id'] = $doc->_id;
-                    //$array['url'] = 'http://www.hicool.top/#/article/'.$doc->_id; 
+                    $array['id'] = $doc->id;
+                    //$array['url'] = 'http://www.hicool.top/#/article/'.$doc->id; 
                     $array['rank'] = $doc->rank(); 
                     //$array['title']=$search->highlight(htmlspecialchars($doc->title)); 
                     $array['title'] = $doc->title;
@@ -203,7 +203,7 @@ try {
                     //print_r($document);
                     $doc = (array)$document;
                     $data = array(
-                        '_id' => $doc['_id'], // 此字段为主键，必须指定
+                        '_id' => $doc['id'], // 此字段为主键，必须指定
                         'title' => $doc['title'],
                         'content' => $doc['content'],
                         'description' => $doc['description'],
@@ -212,7 +212,7 @@ try {
                     $doc = new XSDocument; // 创建文档对象
                     $doc->setFields($data);
                     $INDEX->add($doc); // 添加到索引数据库中
-                    echo 'success '.($page + $i).': '.$doc['_id'].' '.$doc['title'].'</br>';
+                    echo 'success '.($page + $i).': '.$doc['id'].' '.$doc['title'].'</br>';
                     $i++;
                 }
 
@@ -229,7 +229,7 @@ try {
         header('Access-Control-Allow-Origin:*');//注意！跨域要加这个头
         $cmd = $_POST['cmd'];
         $data = array(
-            '_id' => $_POST['_id'], // 此字段为主键，必须指定
+            '_id' => $_POST['id'], // 此字段为主键，必须指定
             'title' => $_POST['title'],
             'content' => $_POST['content'],
             'description' => $_POST['description'],
@@ -240,8 +240,8 @@ try {
         case 'add':
             $doc = new XSDocument; // 创建文档对象
             $doc->setFields($data);
-            $INDEX->add($doc); // 添加到索引数据库中
-            echo '{"result":0}';
+            $r = $INDEX->add($doc); // 添加到索引数据库中
+            echo '{"result":0, "message":"' + $r + '"}';
             break;
         case 'update':
             $doc = new XSDocument; // 创建文档对象
@@ -257,7 +257,7 @@ try {
     {
         $id = pathinfo($_SERVER['REQUEST_URI'], PATHINFO_BASENAME) ;
         $INDEX->del($id);
-        echo '{"result":0,"_id":'.$id.'}';
+        echo '{"result":0,"id":'.$id.'}';
     }
     else
     {

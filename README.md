@@ -1,24 +1,24 @@
 # libertyblog-search
 
 ```
-ln -s /opt/lampp/htdocs/libertyblog-search/libertyblog.ini /usr/local/xunsearch/sdk/php/app/libertyblog.ini
+ln -s /data/www/libertyblog-search/sdk/php/app/libertyblog.ini /data/www/libertyblog-search/libertyblog.ini 
 ```
 
 重建索引，慎用，我们的网站已经很大了，重建一次好数小时
 ```
-http://localhost:8080/libertyblog-search/api.php?cmd=reindex
+http://localhost:12030/libertyblog-search/api.php?cmd=reindex
 ```
 添加索引
 ```
-curl -X POST -d 'cmd=add&_id=123456&title=not mydark&content=this is not mydark&description=aaaa' localhost:8080/libertyblog/api.php
+curl -X POST -d 'cmd=add&_id=123456&title=not mydark&content=this is not mydark&description=aaaa' localhost:12030/libertyblog/api.php
 ```
 更新索引
 ```
-curl -X POST -d 'cmd=update&_id=123456&title=mydark&content=this is mydark&description=dddd' localhost:8080/libertyblog/api.php
+curl -X POST -d 'cmd=update&_id=123456&title=mydark&content=this is mydark&description=dddd' localhost:12030/libertyblog/api.php
 ```
 删除索引
 ```
-curl -X DELETE localhost:8080/libertyblog/api.php/123456
+curl -X DELETE localhost:12030/libertyblog/api.php/123456
 ```
 
 
