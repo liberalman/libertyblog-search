@@ -257,7 +257,7 @@ try {
     {
         $id = pathinfo($_SERVER['REQUEST_URI'], PATHINFO_BASENAME) ;
         $INDEX->del($id);
-        echo '{"status":0, "id":'.$id.'}';
+        echo '{"status": 0, "id":"'.$id.'"}';
     }
     else
     {
