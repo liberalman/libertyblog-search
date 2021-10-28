@@ -241,13 +241,13 @@ try {
             $doc = new XSDocument; // 创建文档对象
             $doc->setFields($data);
             $r = $INDEX->add($doc); // 添加到索引数据库中
-            echo '{"result":0, "message":"' + $r + '"}';
+            echo '{"status": 0}';
             break;
         case 'update':
             $doc = new XSDocument; // 创建文档对象
             $doc->setFields($data);
-            $INDEX->update($doc); // 添加到索引数据库中
-            echo '{"result":0}';
+            $r = $INDEX->update($doc); // 添加到索引数据库中
+            echo '{"status": 0}';
             break;
         default:
             echo 'not found this cmd '.$cmd;
@@ -257,7 +257,7 @@ try {
     {
         $id = pathinfo($_SERVER['REQUEST_URI'], PATHINFO_BASENAME) ;
         $INDEX->del($id);
-        echo '{"result":0,"id":'.$id.'}';
+        echo '{"status":0, "id":'.$id.'}';
     }
     else
     {
@@ -265,9 +265,9 @@ try {
     }
 } catch (XSException $e) {
     $error = strval($e);
-    echo '{"result":"-1","message::"'.$error.'"}';
+    echo '{"result": -1, "message": "'.$error.'"}';
 } catch (Exception $e) {
     $error = $e->getMessage();
-    echo '{"result":"-2","message::"'.$error.'"}';
+    echo '{"result": -2, "message:": "'.$error.'"}';
 }
 ?>
